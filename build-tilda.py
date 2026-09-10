@@ -40,9 +40,12 @@ UPLOAD = [
     "assets/team/denjeu.jpg",
 ]
 
-CLASSES = """wrap lbl hand mark tape rise in bar cta hero logo pink fill sub letters
-hero-foot scrawl strip run manifest note cols svc row num arch arch-head board card
-wide who paperblock founders contact links foot todo""".split()
+# классы вытаскиваем из самой таблицы стилей — иначе при добавлении блока
+# легко забыть дописать имя сюда, и оно уедет в Тильду без префикса
+def collect_classes(css: str) -> list[str]:
+    names = set(re.findall(r"\.(-?[_a-zA-Z][\w-]*)", css))
+    names.discard("vn")
+    return sorted(names, key=len, reverse=True)   # длинные первыми, чтобы не съесть префикс
 
 
 def data_uri(path: Path) -> str:
@@ -50,8 +53,8 @@ def data_uri(path: Path) -> str:
     return f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode()
 
 
-def prefix_css(css: str) -> str:
-    css = re.sub(r"\.(" + "|".join(map(re.escape, CLASSES)) + r")\b", r".vn-\1", css)
+def prefix_css(css: str, classes) -> str:
+    css = re.sub(r"\.(" + "|".join(map(re.escape, classes)) + r")\b", r".vn-\1", css)
     css = css.replace("@keyframes run", "@keyframes vn-run").replace("animation:run ", "animation:vn-run ")
     # глобальные селекторы -> внутрь .vn, чтобы не задеть блоки Тильды
     css = css.replace("*{box-sizing:border-box;margin:0;padding:0}",
@@ -63,9 +66,9 @@ def prefix_css(css: str) -> str:
     return css
 
 
-def prefix_html(html: str) -> str:
+def prefix_html(html: str, classes) -> str:
     def repl(m):
-        names = " ".join(f"vn-{c}" if c in CLASSES else c for c in m.group(1).split())
+        names = " ".join(f"vn-{c}" if c in classes else c for c in m.group(1).split())
         return f'class="{names}"'
     return re.sub(r'class="([^"]*)"', repl, html)
 
@@ -77,8 +80,9 @@ def main(base=""):
     css, body = rest.split("</style>", 1)
     body = body.split("<body>", 1)[1].split("</body>", 1)[0]
 
-    css = prefix_css(css)
-    body = prefix_html(body)
+    classes = collect_classes(css)
+    css = prefix_css(css, classes)
+    body = prefix_html(body, classes)
 
     # маски: с --base ссылаемся на них по URL, иначе вшиваем в код.
     # T123 не принимает блок длиннее 120 000 символов, а три маски в base64 — это 127 КБ.

@@ -1,0 +1,8 @@
+# исходник видео — в сайте не участвует, лежит в Downloads
+assets/hero-raw.mp4
+# дубли ассетов для загрузки в Тильду
+tilda/upload/
+tilda/ventura-media.zip
+# временные файлы съёмки скриншотов
+_*
+.DS_Store

@@ -68,7 +68,7 @@ def prefix_html(html: str) -> str:
     return re.sub(r'class="([^"]*)"', repl, html)
 
 
-def main():
+def main(base=""):
     src = SRC.read_text()
 
     head, rest = src.split("<style>", 1)
@@ -82,7 +82,7 @@ def main():
         css = css.replace(f"url('{rel}')", f"url('{data_uri(ROOT / rel)}')")
 
     for i, rel in enumerate(UPLOAD, 1):
-        token = f"__U{i:02d}__"
+        token = (base + rel) if base else f"__U{i:02d}__"
         css = css.replace(rel, token)
         body = body.replace(rel, token)
 
@@ -92,7 +92,8 @@ def main():
     fonts = re.search(r'<link href="https://fonts\.googleapis[^>]*>', head).group(0)
 
     OUT.mkdir(exist_ok=True)
-    (OUT / "ventura-block.html").write_text(
+    name = "ventura-block-live.html" if base else "ventura-block.html"
+    (OUT / name).write_text(
         "<!-- VENTURA — вставить целиком в блок T123 (HTML-код).\n"
         "     В настройках блока: ширина контейнера 100%, отступы 0.\n"
         "     Плейсхолдеры __U01__ … __U10__ заменить на ссылки из Тильды. -->\n"
@@ -111,11 +112,17 @@ def main():
         lines.append(f"__U{i:02d}__  {dst.name}  ({src_f.stat().st_size // 1024} KB)")
     (OUT / "upload-list.txt").write_text("\n".join(lines) + "\n")
 
-    size = (OUT / "ventura-block.html").stat().st_size
-    print(f"tilda/ventura-block.html — {size // 1024} KB (маски вшиты)")
+    size = (OUT / name).stat().st_size
+    print(f"tilda/{name} — {size // 1024} KB (маски вшиты)")
     print(f"tilda/upload/ — {len(UPLOAD)} файлов на загрузку")
     print("\n".join(lines))
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    # с аргументом --base URL медиа подставляется абсолютными ссылками,
+    # без него остаются плейсхолдеры __U01__ …
+    base = ""
+    if "--base" in sys.argv:
+        base = sys.argv[sys.argv.index("--base") + 1].rstrip("/") + "/"
+    main(base)

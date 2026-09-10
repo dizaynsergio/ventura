@@ -99,6 +99,13 @@ def main(base=""):
         css = css.replace(rel, token)
         body = body.replace(rel, token)
 
+    # В Тильде выполняется только первый короткий скрипт блока, длинный — нет
+    # (видимо, запускается до вставки разметки и ничего не находит). Поэтому
+    # для Тильды выкидываем и метку js, и все правила, которые от неё зависят:
+    # появление по скроллу там просто не нужно, зато ничего не может остаться скрытым.
+    css = re.sub(r"\.js [^{]*\{[^}]*\}\s*", "", css)
+    body = body.replace("<script>document.documentElement.classList.add('js')</script>\n\n", "")
+
     classes = collect_classes(body)
     css = prefix_css(css, classes)
     body = prefix_html(body, classes)
@@ -137,6 +144,12 @@ def main(base=""):
     assert not broken, f"префикс залез в ссылки: {broken[:3]}"
     if base:
         assert out_text.count(base) >= len(INLINE) + len(UPLOAD), "часть ссылок не подставилась"
+    # у искр opacity:0 законен — их проявляет CSS-анимация, она в Тильде работает.
+    # Ловим только правила, которые прячут содержимое и ждут JS.
+    css_only = out_text[out_text.index("<style>"):out_text.index("</style>")]
+    css_only = re.sub(r"/\*.*?\*/", "", css_only, flags=re.S)
+    hidden = re.findall(r"\.vn-(?:rise|step|stagger)[^{]*\{[^}]*opacity:0", css_only)
+    assert not hidden, f"содержимое осталось скрытым и ждёт JS: {hidden[:2]}"
 
     size = (OUT / name).stat().st_size
     print(f"tilda/{name} — {size // 1024} KB (маски " + ("ссылками" if base else "вшиты") + ")")

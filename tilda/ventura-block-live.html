@@ -62,9 +62,7 @@ html{scroll-behavior:smooth}
 /* Появление при скролле включается ТОЛЬКО когда на <html> есть класс js.
    Тильда вставляет разметку блока, но не выполняет скрипты внутри него —
    без этой страховки секции навсегда остаются на opacity:0 и страница пустая. */
-.js .vn-rise{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
-.js .vn-rise.vn-in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.js .vn-rise{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){}
 
 /* ══ ШАПКА ═══════════════════════════════════════════════════════ */
 .vn-bar{
@@ -221,12 +219,6 @@ html{scroll-behavior:smooth}
 .vn-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.6vw,40px);
        margin-top:clamp(30px,4vw,58px)}
 .vn-step{position:relative;border-top:2px solid var(--ink);padding-top:22px}
-.js .vn-step{opacity:0;transform:translateY(22px);
-          transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
-.js .vn-stagger.vn-in .vn-step{opacity:1;transform:none}
-.js .vn-stagger.vn-in .vn-step:nth-child(2){transition-delay:.1s}
-.js .vn-stagger.vn-in .vn-step:nth-child(3){transition-delay:.2s}
-.js .vn-stagger.vn-in .vn-step:nth-child(4){transition-delay:.3s}
 .vn-step svg{width:34px;height:34px;color:var(--pink-deep)}
 .vn-step b{position:absolute;top:20px;right:0;font-family:"JetBrains Mono",monospace;
         font-size:11px;letter-spacing:.14em;opacity:.4}
@@ -330,8 +322,6 @@ html{scroll-behavior:smooth}
     <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.3l3.4 2"/></symbol>
     <symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 0c.7 6.4 4.9 10.6 12 12-7.1 1.4-11.3 5.6-12 12-.7-6.4-4.9-10.6-12-12C7.1 10.6 11.3 6.4 12 0z" fill="currentColor"/></symbol>
   </defs></svg>
-  
-  <script>document.documentElement.classList.add('js')</script>
   
   <header class="vn-bar">
     <a href="#top" style="opacity:1">Ventura<sup>®</sup></a>

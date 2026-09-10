@@ -26,16 +26,18 @@ INLINE = ["assets/mask-letters.webp", "assets/mask-subtext.webp", "assets/mask-p
 
 # всё остальное грузится в Тильду; порядок = порядок плейсхолдеров
 UPLOAD = [
-    "assets/hero.mp4",          # __U01__  видео в буквах
-    "assets/hero-poster.jpg",   # __U02__  постер видео
-    "assets/frames/f08.jpg",    # __U03__  архив 1
-    "assets/frames/f01.jpg",    # __U04__  архив 2
-    "assets/frames/f05.jpg",    # __U05__  архив 3
-    "assets/frames/f02.jpg",    # __U06__  архив 4
-    "assets/frames/f06.jpg",    # __U07__  архив 5
-    "assets/frames/f09.jpg",    # __U08__  архив 6
-    "assets/frames/f04.jpg",    # __U09__  фаундер 1
-    "assets/frames/f07.jpg",    # __U10__  фаундер 2
+    "assets/hero.gif",          # анимация в буквах логотипа
+    "assets/archive/01.jpg",    # гала, танцовщицы
+    "assets/archive/02.jpg",    # Vogue Philippines
+    "assets/archive/03.jpg",    # фотобудка
+    "assets/archive/04.jpg",    # маркет
+    "assets/archive/05.jpg",    # поп-ап, стена писем
+    "assets/archive/06.jpg",    # стикеры и коктейли
+    "assets/team/angeeeliin.jpg",
+    "assets/team/babyy_yodaaa.jpg",
+    "assets/team/csekoriy.jpg",
+    "assets/team/ddynasties_.jpg",
+    "assets/team/denjeu.jpg",
 ]
 
 CLASSES = """wrap lbl hand mark tape rise in bar cta hero logo pink fill sub letters
@@ -101,7 +103,9 @@ def main(base=""):
     (OUT / name).write_text(
         "<!-- VENTURA — вставить целиком в блок T123 (HTML-код).\n"
         "     В настройках блока: ширина контейнера 100%, отступы 0.\n"
-        "     Плейсхолдеры __U01__ … __U10__ заменить на ссылки из Тильды. -->\n"
+        + ("     Медиа отдаётся с GitHub Pages, ничего дозагружать не нужно. -->\n"
+           if base else
+           "     Плейсхолдеры __U01__ … заменить на ссылки из Тильды. -->\n")
         + fonts + "\n<style>" + css + "</style>\n\n"
         '<div class="vn">' + body.replace("\n", "\n  ") + "</div>\n"
     )

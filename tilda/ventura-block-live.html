@@ -1,6 +1,6 @@
 <!-- VENTURA — вставить целиком в блок T123 (HTML-код).
      В настройках блока: ширина контейнера 100%, отступы 0.
-     Плейсхолдеры __U01__ … __U10__ заменить на ссылки из Тильды. -->
+     Медиа отдаётся с GitHub Pages, ничего дозагружать не нужно. -->
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════════════════
@@ -91,7 +91,7 @@ html{scroll-behavior:smooth}
 .vn-letters{background:var(--ink);  -webkit-mask-image:var(--m-letters); mask-image:var(--m-letters)}
 .vn-sub    {background:var(--ink);  -webkit-mask-image:var(--m-sub);     mask-image:var(--m-sub)}
 .vn-fill   {background:var(--ink);  -webkit-mask-image:var(--m-letters); mask-image:var(--m-letters)}
-.vn-fill video{width:100%;height:100%;object-fit:cover;filter:contrast(1.08) saturate(1.12)}
+.vn-fill img{width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(1.15)}
 
 /* мобильная версия: знак крупнее, композиция плотнее */
 @media (max-width:640px){
@@ -159,18 +159,18 @@ html{scroll-behavior:smooth}
 .vn-card img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--paper-2)}
 .vn-card figcaption{position:absolute;left:14px;right:14px;bottom:12px;
                  font-family:Caveat,cursive;font-weight:700;font-size:19px;line-height:1.05}
-.vn-card:nth-child(1){grid-column:1/4;  transform:rotate(-3.2deg)}
-.vn-card:nth-child(2){grid-column:4/8;  transform:rotate(1.6deg);  margin-top:clamp(26px,5vw,72px)}
-.vn-card:nth-child(3){grid-column:8/13; transform:rotate(-1.1deg)}
-.vn-card:nth-child(4){grid-column:1/6;  transform:rotate(2.2deg);  margin-top:-6%}
-.vn-card:nth-child(5){grid-column:6/10; transform:rotate(-2.4deg)}
-.vn-card:nth-child(6){grid-column:10/13;transform:rotate(3deg);    margin-top:clamp(20px,4vw,60px)}
+.vn-board .vn-card:nth-child(1){grid-column:1/4;  transform:rotate(-3.2deg)}
+.vn-board .vn-card:nth-child(2){grid-column:4/9;  transform:rotate(1.6deg);  margin-top:clamp(26px,5vw,72px)}
+.vn-board .vn-card:nth-child(3){grid-column:9/13; transform:rotate(-1.1deg)}
+.vn-board .vn-card:nth-child(4){grid-column:1/6;  transform:rotate(2.2deg);  margin-top:-4%}
+.vn-board .vn-card:nth-child(5){grid-column:6/10; transform:rotate(-2.4deg)}
+.vn-board .vn-card:nth-child(6){grid-column:10/13;transform:rotate(3deg);    margin-top:clamp(20px,4vw,60px)}
 .vn-card.vn-wide img{aspect-ratio:4/3}
 @media (max-width:860px){
   .vn-board{grid-template-columns:repeat(2,1fr)}
-  .vn-card:nth-child(n){grid-column:auto;margin-top:0}
-  .vn-card:nth-child(odd){transform:rotate(-2.4deg)}
-  .vn-card:nth-child(even){transform:rotate(1.8deg);margin-top:24px}
+  .vn-board .vn-card:nth-child(n){grid-column:auto;margin-top:0}
+  .vn-board .vn-card:nth-child(odd){transform:rotate(-2.4deg)}
+  .vn-board .vn-card:nth-child(even){transform:rotate(1.8deg);margin-top:24px}
 }
 
 /* ══ КТО МЫ ══════════════════════════════════════════════════════ */
@@ -185,9 +185,15 @@ html{scroll-behavior:smooth}
 }
 .vn-paperblock p{font-size:14px;line-height:28px;opacity:.8}
 .vn-paperblock p + p{margin-top:28px}
-.vn-founders{display:flex;gap:clamp(14px,2vw,26px);margin-top:26px;flex-wrap:wrap}
-.vn-founders .vn-card{padding:10px 10px 38px;flex:1 1 160px}
-.vn-founders .vn-card img{aspect-ratio:1/1}
+.team{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);
+      gap:clamp(10px,1.6vw,26px);margin-top:clamp(30px,4vw,60px)}
+.team .vn-card{padding:10px 10px 40px}
+.team .vn-card img{aspect-ratio:1/1}
+.team figcaption{font-size:17px}
+.team a{display:block;text-decoration:none;color:inherit}
+.team .vn-card:nth-child(odd){transform:rotate(-2.1deg)}
+.team .vn-card:nth-child(even){transform:rotate(1.7deg);margin-top:clamp(12px,2vw,30px)}
+@media (max-width:860px){.team{grid-template-columns:repeat(2,1fr)}}
 
 /* ══ КОНТАКТЫ ════════════════════════════════════════════════════ */
 .vn-contact{margin-top:clamp(70px,11vw,160px);background:var(--ink);color:var(--paper);
@@ -231,8 +237,7 @@ html{scroll-behavior:smooth}
     <div class="vn-logo">
       <div class="vn-pink"></div>
       <div class="vn-fill">
-        <!-- VIDEO 1 -->
-        <video src="https://dizaynsergio.github.io/ventura/assets/hero.mp4" poster="https://dizaynsergio.github.io/ventura/assets/hero-poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+        <img src="https://dizaynsergio.github.io/ventura/assets/hero.gif" alt="">
       </div>
       <div class="vn-sub"></div>
     </div>
@@ -285,12 +290,12 @@ html{scroll-behavior:smooth}
       </div>
   
       <div class="vn-board">
-        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f08.jpg" alt="Съёмка на улице"><figcaption>coming soon — первый выезд</figcaption></figure>
-        <figure class="vn-card vn-tape vn-wide"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f01.jpg" alt="Съёмка в парке"><figcaption>парк, интервью</figcaption></figure>
-        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f05.jpg" alt="Ночная съёмка"><figcaption>ночная смена</figcaption></figure>
-        <figure class="vn-card vn-tape vn-wide"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f02.jpg" alt="Портретная съёмка"><figcaption>портрет, дубль 3</figcaption></figure>
-        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f06.jpg" alt="Прогулка"><figcaption>уходим с площадки</figcaption></figure>
-        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f09.jpg" alt="Съёмка в городе"><figcaption>город, бэки</figcaption></figure>
+        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/archive/01.jpg" alt="Гала-ужин, выступление танцовщиц"><figcaption>гала · выход танцовщиц</figcaption></figure>
+        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/archive/02.jpg" alt="Ужин Vogue Philippines"><figcaption>Vogue Philippines · посадка на 200</figcaption></figure>
+        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/archive/03.jpg" alt="Лаунж-зона с фотобудкой"><figcaption>afterparty · фотобудка не простаивала</figcaption></figure>
+        <figure class="vn-card vn-tape vn-wide"><img src="https://dizaynsergio.github.io/ventura/assets/archive/04.jpg" alt="Креативный маркет с печатной мастерской"><figcaption>маркет · воркшопы и печать</figcaption></figure>
+        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/archive/05.jpg" alt="Поп-ап со стеной писем"><figcaption>поп-ап · стена с письмами</figcaption></figure>
+        <figure class="vn-card vn-tape"><img src="https://dizaynsergio.github.io/ventura/assets/archive/06.jpg" alt="Стол с коктейлями и мерчем"><figcaption>мерч, стикеры, коктейли</figcaption></figure>
       </div>
     </section>
   
@@ -299,17 +304,19 @@ html{scroll-behavior:smooth}
       <div>
         <p class="vn-lbl">03 — Кто мы</p>
         <h2 style="margin-top:16px">Молодая<br>команда<br>из Алматы</h2>
-        <div class="vn-founders">
-          <figure class="vn-card vn-tape vn-todo"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f04.jpg" alt="Фаундер"><figcaption>@angeeeliin</figcaption></figure>
-          <figure class="vn-card vn-tape vn-todo"><img src="https://dizaynsergio.github.io/ventura/assets/frames/f07.jpg" alt="Фаундер"><figcaption>@babyy_yodaaa</figcaption></figure>
-        </div>
-        <p class="vn-lbl" style="margin-top:14px">↑ заменить на нормальные портреты</p>
       </div>
   
       <div class="vn-paperblock">
         <p>Ventura появилась в 2025 году в Алматы. Мы начинали с того, что снимали для себя — и быстро поняли, что живой кадр работает лучше любой отрисованной картинки.</p>
         <p>Сейчас мы делаем полный цикл: придумываем, снимаем, монтируем и ведём. Работаем с брендами, которым важно не просто «быть в соцсетях», а чтобы их узнавали.</p>
         <p>Каждый проект остаётся в нашем архиве — отсюда и подпись, которую вы видите на всех наших кадрах.</p>
+      </div>
+      <div class="team">
+        <figure class="vn-card vn-tape"><a href="https://www.instagram.com/angeeeliin/" target="_blank" rel="noopener"><img src="https://dizaynsergio.github.io/ventura/assets/team/angeeeliin.jpg" alt="angeeeliin"><figcaption>@angeeeliin</figcaption></a></figure>
+        <figure class="vn-card vn-tape"><a href="https://www.instagram.com/babyy_yodaaa/" target="_blank" rel="noopener"><img src="https://dizaynsergio.github.io/ventura/assets/team/babyy_yodaaa.jpg" alt="babyy_yodaaa"><figcaption>@babyy_yodaaa</figcaption></a></figure>
+        <figure class="vn-card vn-tape"><a href="https://www.instagram.com/csekoriy/" target="_blank" rel="noopener"><img src="https://dizaynsergio.github.io/ventura/assets/team/csekoriy.jpg" alt="csekoriy"><figcaption>@csekoriy</figcaption></a></figure>
+        <figure class="vn-card vn-tape"><a href="https://www.instagram.com/ddynasties_/" target="_blank" rel="noopener"><img src="https://dizaynsergio.github.io/ventura/assets/team/ddynasties_.jpg" alt="ddynasties_"><figcaption>@ddynasties_</figcaption></a></figure>
+        <figure class="vn-card vn-tape"><a href="https://www.instagram.com/denjeu/" target="_blank" rel="noopener"><img src="https://dizaynsergio.github.io/ventura/assets/team/denjeu.jpg" alt="denjeu"><figcaption>@denjeu</figcaption></a></figure>
       </div>
     </section>
   

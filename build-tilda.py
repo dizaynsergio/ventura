@@ -78,8 +78,13 @@ def main(base=""):
     css = prefix_css(css)
     body = prefix_html(body)
 
+    # маски: с --base ссылаемся на них по URL, иначе вшиваем в код.
+    # T123 не принимает блок длиннее 120 000 символов, а три маски в base64 — это 127 КБ.
     for rel in INLINE:
-        css = css.replace(f"url('{rel}')", f"url('{data_uri(ROOT / rel)}')")
+        if base:
+            css = css.replace(f"url('{rel}')", f"url('{base}{rel}')")
+        else:
+            css = css.replace(f"url('{rel}')", f"url('{data_uri(ROOT / rel)}')")
 
     for i, rel in enumerate(UPLOAD, 1):
         token = (base + rel) if base else f"__U{i:02d}__"
@@ -113,7 +118,7 @@ def main(base=""):
     (OUT / "upload-list.txt").write_text("\n".join(lines) + "\n")
 
     size = (OUT / name).stat().st_size
-    print(f"tilda/{name} — {size // 1024} KB (маски вшиты)")
+    print(f"tilda/{name} — {size // 1024} KB (маски " + ("ссылками" if base else "вшиты") + ")")
     print(f"tilda/upload/ — {len(UPLOAD)} файлов на загрузку")
     print("\n".join(lines))
 

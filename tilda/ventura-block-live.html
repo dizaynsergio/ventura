@@ -5,12 +5,12 @@
 <style>
 /* ══════════════════════════════════════════════════════════════════
    ССЫЛКИ НА МЕДИА — единственное место, где их нужно менять.
-   При переносе в Tilda подставить сюда URL с static.vn-tildacdn.vn-com
+   При переносе в Tilda подставить сюда URL с static.tildacdn.com
    ══════════════════════════════════════════════════════════════════ */
 :root{
-  --m-letters: url('assets/mask-letters.vn-webp');
-  --m-sub:     url('assets/mask-subtext.vn-webp');
-  --m-pink:    url('assets/mask-pink.vn-webp');
+  --m-letters: url('https://dizaynsergio.github.io/ventura/assets/mask-letters.webp');
+  --m-sub:     url('https://dizaynsergio.github.io/ventura/assets/mask-subtext.webp');
+  --m-pink:    url('https://dizaynsergio.github.io/ventura/assets/mask-pink.webp');
   /* видео задаётся в <video src> — их два места, оба помечены VIDEO */
 
   --logo-ratio: 2159 / 1025;
@@ -35,7 +35,7 @@ html{scroll-behavior:smooth}
 /* бумажная зернистость поверх фона */
 .vn::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.35;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.vn-w3.vn-org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
 }
 .vn img,.vn video{display:block;max-width:100%}
@@ -309,7 +309,7 @@ html{scroll-behavior:smooth}
 }
 
 /* TODO-подсветка: убрать вместе с классом, когда данные будут реальными */
-.vn-todo{outline:1.5px dashed var(--pink-deep);outline-offset:3px}
+.todo{outline:1.5px dashed var(--pink-deep);outline-offset:3px}
 </style>
 
 <div class="vn">

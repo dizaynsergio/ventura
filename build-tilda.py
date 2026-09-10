@@ -40,10 +40,15 @@ UPLOAD = [
     "assets/team/denjeu.jpg",
 ]
 
-# классы вытаскиваем из самой таблицы стилей — иначе при добавлении блока
-# легко забыть дописать имя сюда, и оно уедет в Тильду без префикса
-def collect_classes(css: str) -> list[str]:
-    names = set(re.findall(r"\.(-?[_a-zA-Z][\w-]*)", css))
+# Классы берём из атрибутов class= в разметке, а не из CSS.
+# Регулярка по CSS цепляла всё, что стоит после точки: расширения файлов
+# (mask.webp -> mask.vn-webp) и куски доменов (tildacdn.com -> tildacdn.vn-com).
+# В разметке двусмысленности нет. "in" добавляется скриптом на лету, поэтому руками.
+def collect_classes(html: str) -> list[str]:
+    names = set()
+    for m in re.finditer(r'class="([^"]*)"', html):
+        names.update(m.group(1).split())
+    names.add("in")
     names.discard("vn")
     return sorted(names, key=len, reverse=True)   # длинные первыми, чтобы не съесть префикс
 
@@ -80,10 +85,7 @@ def main(base=""):
     css, body = rest.split("</style>", 1)
     body = body.split("<body>", 1)[1].split("</body>", 1)[0]
 
-    classes = collect_classes(css)
-    css = prefix_css(css, classes)
-    body = prefix_html(body, classes)
-
+    # ССЫЛКИ ПОДСТАВЛЯЕМ ДО ПРЕФИКСОВ: иначе путь уже испорчен и не совпадёт
     # маски: с --base ссылаемся на них по URL, иначе вшиваем в код.
     # T123 не принимает блок длиннее 120 000 символов, а три маски в base64 — это 127 КБ.
     for rel in INLINE:
@@ -96,6 +98,10 @@ def main(base=""):
         token = (base + rel) if base else f"__U{i:02d}__"
         css = css.replace(rel, token)
         body = body.replace(rel, token)
+
+    classes = collect_classes(body)
+    css = prefix_css(css, classes)
+    body = prefix_html(body, classes)
 
     body = body.replace("classList.add('in')", "classList.add('vn-in')")
     body = body.replace("querySelectorAll('.rise')", "querySelectorAll('.vn-rise')")
@@ -124,6 +130,13 @@ def main(base=""):
         shutil.copy(src_f, dst)
         lines.append(f"__U{i:02d}__  {dst.name}  ({src_f.stat().st_size // 1024} KB)")
     (OUT / "upload-list.txt").write_text("\n".join(lines) + "\n")
+
+    # страховка: префикс не должен был залезть внутрь ссылок
+    out_text = (OUT / name).read_text()
+    broken = re.findall(r"[\w./:-]*\.vn-(?:webp|jpg|jpeg|png|gif|mp4|com|io|ru)\b", out_text)
+    assert not broken, f"префикс залез в ссылки: {broken[:3]}"
+    if base:
+        assert out_text.count(base) >= len(INLINE) + len(UPLOAD), "часть ссылок не подставилась"
 
     size = (OUT / name).stat().st_size
     print(f"tilda/{name} — {size // 1024} KB (маски " + ("ссылками" if base else "вшиты") + ")")
